@@ -50,16 +50,15 @@ function getUserData(accessToken, callback) {
  * Per issue #53 for BadRequest when message uses utf-8 characters: Set 'Content-Length': Buffer.byteLength(mailBody,'utf8')
  */
 function postSendMail(accessToken, mailBody, callback) {
-  var outHeaders = {
-    'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + accessToken,
-    'Content-Length': mailBody.length
-  };
   var options = {
     host: 'graph.microsoft.com',
     path: '/v1.0/me/microsoft.graph.sendMail',
     method: 'POST',
-    headers: outHeaders
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + accessToken,
+      'Content-Length': mailBody.length
+    }
   };
 
   // Set up the request
