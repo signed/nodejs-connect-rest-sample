@@ -4,7 +4,7 @@
   "description": "Connecting to Office 365 is the first step every Node.js app must take to start working with Office 365 services and data. This sample shows how to connect and then call one endpoint through the Microsoft Graph API.",
   "private": true,
   "scripts": {
-    "start": "mocha ./tests/confTest.js && node ./bin/www",
+    "start": "mocha ./tests/confTest.js && nodemon ./bin/www",
     "lint": "eslint .",
     "test": "mocha ./tests/integrationTest.js --timeout 10000",
     "automatedTest": "mocha ./tests/automatedTest.js --timeout 20000"
@@ -38,6 +38,7 @@
     "gulp": "^3.9.0",
     "gulp-nodemon": "^2.0.4",
     "mocha": "^2.4.5",
+    "nodemon": "1.11.0",
     "selenium-webdriver": "^2.53.3"
   }
 }
