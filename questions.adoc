@@ -8,4 +8,5 @@ What options are configured in express?::
   Have a look into app.js and read the documentation
 How to send attachments?::
   Lets see
-
+Where is api documentation for sending mails over graph?::
+  https://msdn.microsoft.com/office/office365/APi/mail-rest-operations#SendMessageOnTheFly[Send Message On The Fly] seems to be for an old outlook v2 api
