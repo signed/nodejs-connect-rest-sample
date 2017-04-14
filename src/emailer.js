@@ -10,6 +10,8 @@ function getEmailContent(name) {
 }
 
 /**
+ * https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/user_sendmail
+ *
  * Wraps the email's message content in the expected [soon-to-deserialized JSON] format
  * @param {string} content the message body of the email message
  * @param {string} recipient the email address to whom this message will be sent
@@ -28,6 +30,13 @@ function wrapEmail(content, recipient) {
           EmailAddress: {
             Address: recipient
           }
+        }
+      ],
+      Attachments: [
+        {
+          "@odata.type": "#Microsoft.OutlookServices.FileAttachment",
+          "Name": "menu.txt",
+          "ContentBytes": "bWFjIGFuZCBjaGVlc2UgdG9kYXk="
         }
       ]
     },
