@@ -39,56 +39,62 @@ router.get('/login', function (req, res) {
       }
     });
   } else {
-    res.render('login', { auth_url: authHelper.getAuthUrl() });
+    res.render('login', {auth_url: authHelper.getAuthUrl()});
   }
 });
 
-function renderSendMail(req, res) {
-  requestUtil.getUserData(
-    req.cookies.ACCESS_TOKEN_CACHE_KEY,
-    function (firstRequestError, firstTryUser) {
-      if (firstTryUser !== null) {
-        req.session.user = firstTryUser;
-        res.render(
-          'sendMail',
-          {
-            display_name: firstTryUser.displayName,
-            user_principal_name: firstTryUser.userPrincipalName
-          }
-        );
-      } else if (hasAccessTokenExpired(firstRequestError)) {
-        // Handle the refresh flow
-        authHelper.getTokenFromRefreshToken(
-          req.cookies.REFRESH_TOKEN_CACHE_KEY,
-          function (refreshError, accessToken) {
-            res.cookie(authHelper.ACCESS_TOKEN_CACHE_KEY, accessToken);
-            if (accessToken !== null) {
-              requestUtil.getUserData(
-                req.cookies.ACCESS_TOKEN_CACHE_KEY,
-                function (secondRequestError, secondTryUser) {
-                  if (secondTryUser !== null) {
-                    req.session.user = secondTryUser;
-                    res.render(
-                      'sendMail',
-                      {
-                        display_name: secondTryUser.displayName,
-                        user_principal_name: secondTryUser.userPrincipalName
-                      }
-                    );
-                  } else {
-                    clearCookies(res);
-                    renderError(res, secondRequestError);
-                  }
-                }
-              );
-            } else {
-              renderError(res, refreshError);
-            }
-          });
-      } else {
-        renderError(res, firstRequestError);
-      }
+var processUserDataResponse = function (req, res) {
+  return function (firstRequestError, firstTryUser) {
+    if (firstTryUser !== null) {
+      req.session.user = firstTryUser;
+      res.render(
+        'sendMail',
+        {
+          display_name: firstTryUser.displayName,
+          user_principal_name: firstTryUser.userPrincipalName
+        }
+      );
+      return;
     }
+
+    if (hasAccessTokenExpired(firstRequestError)) {
+      // Handle the refresh flow
+      authHelper.getTokenFromRefreshToken(
+        req.cookies.REFRESH_TOKEN_CACHE_KEY,
+        function (refreshError, accessToken) {
+          res.cookie(authHelper.ACCESS_TOKEN_CACHE_KEY, accessToken);
+          if (accessToken !== null) {
+            requestUtil.getUserData(
+              req.cookies.ACCESS_TOKEN_CACHE_KEY,
+              function (secondRequestError, secondTryUser) {
+                if (secondTryUser !== null) {
+                  req.session.user = secondTryUser;
+                  res.render(
+                    'sendMail',
+                    {
+                      display_name: secondTryUser.displayName,
+                      user_principal_name: secondTryUser.userPrincipalName
+                    }
+                  );
+                } else {
+                  clearCookies(res);
+                  renderError(res, secondRequestError);
+                }
+              }
+            );
+          } else {
+            renderError(res, refreshError);
+          }
+        });
+      return;
+    }
+
+    renderError(res, firstRequestError);
+  };
+};
+
+function renderSendMail(req, res) {
+  requestUtil.getUserData(req.cookies.ACCESS_TOKEN_CACHE_KEY, processUserDataResponse(req, res)
   );
 }
 
