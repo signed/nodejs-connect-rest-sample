@@ -1,6 +1,4 @@
 # Microsoft Graph Connect Sample for Node.js
-![Build Status](https://office.visualstudio.com/_apis/public/build/definitions/0323e522-dd35-4fbf-8d8a-a3370491558c/446/badge "Build Status")
-
 ## Table of contents
 
 * [Introduction](#introduction)
@@ -14,8 +12,6 @@
 ## Introduction
 
 This sample shows how to connect a Node.js app to a Microsoft work or school (Azure Active Directory) or personal (Microsoft) account using the Microsoft Graph API to send an email. In addition, the sample uses the Office Fabric UI for styling and formatting the user experience.
-
-![Microsoft Graph Connect Sample for Node.js screenshot](./readme-imgs/screenshot.PNG)
 
 ## Prerequisites
 
@@ -75,22 +71,8 @@ To use the Microsoft Graph Connect Sample for Node.js, you need the following:
 
 > Note: To understand the code for calling the Microsoft Graph API in a Node.js app, see [Get started with Microsoft Graph in a Node.js app](https://graph.microsoft.io/en-us/docs/platform/nodejs).
 
-## Questions and comments
-
-We'd love to get your feedback about the Microsoft Graph Connect Sample for Node.js. You can send your questions and suggestions in the [Issues](https://github.com/microsoftgraph/nodejs-connect-rest-sample/issues) section of this repository.
-
-Questions about Microsoft Graph development in general should be posted to [Stack Overflow](https://stackoverflow.com/questions/tagged/microsoftgraph). Make sure that your questions or comments are tagged with [microsoftgraph].
-
-## Contributing ##
-
-If you'd like to contribute to this sample, see [CONTRIBUTING.MD](/CONTRIBUTING.md).
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
   
 ## Additional resources
 
 - [Other Microsoft Graph Connect samples](https://github.com/MicrosoftGraph?utf8=%E2%9C%93&query=-Connect)
 - [Microsoft Graph](https://graph.microsoft.io)
-
-## Copyright
-Copyright (c) 2016 Microsoft. All rights reserved.
