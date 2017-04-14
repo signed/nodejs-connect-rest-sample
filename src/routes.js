@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var authHelper = require('../authHelper.js');
-var requestUtil = require('../requestUtil.js');
-var emailer = require('../emailer.js');
+var authHelper = require('./authHelper.js');
+var requestUtil = require('./requestUtil.js');
+var emailer = require('./emailer.js');
 
 /* GET home page. */
 router.get('/', function (req, res) {
