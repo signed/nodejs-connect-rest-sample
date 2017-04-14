@@ -4,4 +4,6 @@ Main Header
 .Labeled
 Where to change permissions the app requests?::
   do not know yet
+What options are configured in express?::
+  Have a look into app.js and read the documentation
 
