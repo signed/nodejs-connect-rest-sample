@@ -4,7 +4,8 @@ module.exports = {
     'node': true,
   },
   'extends': 'airbnb/legacy',
-  'rules':{
+  'rules': {
+    'max-len': "off",
     'prefer-template': 0,
     'comma-dangle': 0,
     'func-names': 0,
