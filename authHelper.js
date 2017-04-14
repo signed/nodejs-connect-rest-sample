@@ -1,8 +1,3 @@
-/*
- * Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license.
- * See LICENSE in the project root for license information.
- */
-
 // This sample uses an open source OAuth 2.0 library that is compatible
 // with the Azure AD v2.0 endpoint.
 // Microsoft does not provide fixes or direct support for this library.

@@ -1,8 +1,3 @@
-/*
- * Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license.
- * See LICENSE in the project root for license information.
- */
-// application dependencies
 var express = require('express');
 var session = require('express-session');
 var path = require('path');
