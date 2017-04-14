@@ -16,7 +16,7 @@ var credentials = {
   client_id: 'ENTER_YOUR_CLIENT_ID',
   client_secret: 'ENTER_YOUR_SECRET',
   redirect_uri: 'http://localhost:3000/login',
-  scope: 'User.Read Mail.Send offline_access'
+  scope: 'User.Read Mail.Send'
 };
 
 /**
