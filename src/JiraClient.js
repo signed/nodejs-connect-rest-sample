@@ -15,8 +15,20 @@ class JiraClient {
       auth: 'admin:admin',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json'
       }
     };
+  }
+
+  search(jql) {
+    const options = {
+      path: this.completeBasePathWith('search'),
+      method: 'POST'
+    };
+    const body = {
+      jql: jql
+    };
+    return httpRequest(Object.assign({}, this.baseOptions, options), body);
   }
 
   versionsFor(projectKey) {

@@ -2,8 +2,29 @@
     <span>{{error}}</span>
 {{/if}}
 
+<h1>{{header}}</h1>
 <ul style='list-style-type:none'>
     {{#each versions}}
         <li>{{name}} {{description}}</li>
     {{/each}}
 </ul>
+
+<ul style='list-style-type:none'>
+    {{#each issues}}
+        <li>
+            {{key}} {{fields.summary}}<br>
+            {{fields.description}}
+        </li>
+    {{/each}}
+</ul>
+
+<dl>
+    {{#each issues}}
+        <dt>
+            {{key}} {{fields.summary}}<br>
+        </dt>
+        <dd>
+            {{fields.description}}
+        </dd>
+    {{/each}}
+</dl>

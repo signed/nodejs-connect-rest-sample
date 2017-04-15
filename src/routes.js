@@ -15,9 +15,15 @@ router.get('/', function (req, res) {
 });
 
 router.get('/jira', function (req, res) {
-  new JiraClient().versionsFor('SAM')
-    .then((versionsJson) => res.render('jira', {versions: JSON.parse(versionsJson)}))
-    .catch((err) => res.render('jira', {error: err}));
+  const jiraClient = new JiraClient();
+  const renderError = (err) => res.render('jira', {error: err});
+
+  jiraClient.search('project=SAM AND fixVersion = next-release')
+    .then((issuesJson) => res.render('jira', {header: 'Welcome', issues: JSON.parse(issuesJson).issues}))
+    .catch(renderError);
+//  jiraClient.versionsFor('SAM')
+//    .then((versionsJson) => res.render('jira', {versions: JSON.parse(versionsJson)}))
+//    .catch(renderError);
 });
 
 router.get('/disconnect', function (req, res) {

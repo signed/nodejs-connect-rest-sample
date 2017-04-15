@@ -1,8 +1,14 @@
-const httpRequest = function (options) {
+const httpRequest = function (options, jsonBody) {
   const protocol = options.protocol;
   return new Promise((resolve, reject) => {
     // select http or https module, depending on reqested url
     const lib = protocol.startsWith('https') ? require('https') : require('http');
+    const optionsWithHeaders = Object.assign({headers: {}}, options);
+    let body = '';
+    if (jsonBody) {
+      body = JSON.stringify(jsonBody);
+      optionsWithHeaders.headers['Content-Length'] = Buffer.byteLength(body);
+    }
     const request = lib.request(options, (response) => {
       // handle http errors
       if (response.statusCode < 200 || response.statusCode > 299) {
@@ -17,6 +23,7 @@ const httpRequest = function (options) {
     });
     // handle connection errors of the request
     request.on('error', (err) => reject(err));
+    request.write(body);
     request.end();
   })
 };
