@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var authHelper = require('./authHelper.js');
-var requestUtil = require('./requestUtil.js');
-var emailer = require('./emailer.js');
-var {httpRequest} = require('./httpClient');
+const express = require('express');
+const router = express.Router();
+const authHelper = require('./authHelper.js');
+const requestUtil = require('./requestUtil.js');
+const emailer = require('./emailer.js');
+const {httpRequest} = require('./httpClient');
 
 /* GET home page. */
 router.get('/', function (req, res) {
@@ -20,7 +20,7 @@ router.get('/jira', function (req, res) {
   //curl -u admin:admin -X GET -H "Content-Type: application/json" https://localhost:2990/jira/rest/api/2/project/SAM/versions
   //curl -u admin:admin -X GET -H "Content-Type: application/json" https://localhost:2990/jira/rest/api/2/search?jql=project%20%3D%20SAM%20AND%20fixVersion%20%3D%20next-release
   let projectKey = 'SAM';
-  var options = {
+  const options = {
     protocol: 'http:',
     host: 'localhost',
     port: '2990',
@@ -66,7 +66,7 @@ router.get('/login', function (req, res) {
   }
 });
 
-var processUserDataResponse = function (req, res) {
+const processUserDataResponse = function (req, res) {
   return function (firstRequestError, firstTryUser) {
     if (firstTryUser !== null) {
       req.session.user = firstTryUser;
@@ -117,12 +117,12 @@ var processUserDataResponse = function (req, res) {
 };
 
 router.post('/', function (req, res) {
-  var destinationEmailAddress = req.body.default_email;
-  var mailBody = emailer.generateMailBody(
+  const destinationEmailAddress = req.body.default_email;
+  const mailBody = emailer.generateMailBody(
     req.session.user.displayName,
     destinationEmailAddress
   );
-  var templateData = {
+  const templateData = {
     display_name: req.session.user.displayName,
     user_principal_name: req.session.user.userPrincipalName,
     actual_recipient: destinationEmailAddress
@@ -165,15 +165,13 @@ router.post('/', function (req, res) {
 });
 
 function hasAccessTokenExpired(e) {
-  var expired;
   if (!e.innerError) {
-    expired = false;
-  } else {
-    expired = e.code === 401 &&
-      e.innerError.code === 'InvalidAuthenticationToken' &&
-      e.innerError.message === 'Access token has expired.';
+    return false;
   }
-  return expired;
+  return e.code === 401 &&
+    e.innerError.code === 'InvalidAuthenticationToken' &&
+    e.innerError.message === 'Access token has expired.';
+
 }
 
 function clearCookies(res) {
