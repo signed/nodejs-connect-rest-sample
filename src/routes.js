@@ -18,12 +18,17 @@ router.get('/jira', function (req, res) {
   const jiraClient = new JiraClient();
   const renderError = (err) => res.render('jira', {error: err});
 
-  jiraClient.search('project=SAM AND fixVersion = next-release')
-    .then((issuesJson) => res.render('jira', {header: 'Welcome', issues: JSON.parse(issuesJson).issues}))
+  const responseData = {header: 'Welcome'};
+
+  const issues = jiraClient.search('project=SAM AND fixVersion = next-release')
+    .then(issuesJson => Object.assign(responseData, {issues: JSON.parse(issuesJson)}.issues));
+  const versions = jiraClient.versionsFor('SAM')
+    .then(versionsJson => Object.assign(responseData, {versions: JSON.parse(versionsJson)}));
+
+  Promise.all([versions, issues])
+    .then(() => res.render('jira', responseData))
     .catch(renderError);
-//  jiraClient.versionsFor('SAM')
-//    .then((versionsJson) => res.render('jira', {versions: JSON.parse(versionsJson)}))
-//    .catch(renderError);
+
 });
 
 router.get('/disconnect', function (req, res) {
