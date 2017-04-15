@@ -22,12 +22,10 @@ function getUserData(accessToken, callback) {
     response.on('data', function (d) {
       body += d;
     });
+
     response.on('end', function () {
-      var error;
-      if (response.statusCode === 200) {
-        callback(null, JSON.parse(body));
-      } else {
-        error = new Error();
+      if (response.statusCode !== 200) {
+        var error = new Error();
         error.code = response.statusCode;
         error.message = response.statusMessage;
         // The error body sometimes includes an empty space
@@ -35,7 +33,10 @@ function getUserData(accessToken, callback) {
         body = body.trim();
         error.innerError = JSON.parse(body).error;
         callback(error, null);
+        return;
       }
+
+      callback(null, JSON.parse(body));
     });
   }).on('error', function (e) {
     callback(e, null);
@@ -68,24 +69,15 @@ function postSendMail(accessToken, mailBody, callback) {
       body += d;
     });
     response.on('end', function () {
-      var error;
-      if (response.statusCode === 202) {
-        callback(null);
-      } else {
-        error = new Error();
+      if (response.statusCode !== 202) {
+        var error = new Error();
         error.code = response.statusCode;
         error.message = response.statusMessage;
-        // The error body sometimes includes an empty space
-        // before the first character, remove it or it causes an error.
-        body = body.trim();
-        error.innerError = JSON.parse(body).error;
-        // Note: If you receive a 500 - Internal Server Error
-        // while using a Microsoft account (outlok.com, hotmail.com or live.com),
-        // it's possible that your account has not been migrated to support this flow.
-        // Check the inner error object for code 'ErrorInternalServerTransientError'.
-        // You can try using a newly created Microsoft account or contact support.
+        error.innerError = JSON.parse(body.trim()).error;
         callback(error);
+        return;
       }
+      callback(null);
     });
   });
 
