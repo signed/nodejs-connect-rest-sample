@@ -9,9 +9,9 @@ router.get('/', function (req, res) {
   // check for token
   if (req.cookies.REFRESH_TOKEN_CACHE_KEY === undefined) {
     res.redirect('login');
-  } else {
-    renderSendMail(req, res);
+    return;
   }
+  requestUtil.getUserData(req.cookies.ACCESS_TOKEN_CACHE_KEY, processUserDataResponse(req, res));
 });
 
 router.get('/disconnect', function (req, res) {
@@ -92,11 +92,6 @@ var processUserDataResponse = function (req, res) {
     renderError(res, firstRequestError);
   };
 };
-
-function renderSendMail(req, res) {
-  requestUtil.getUserData(req.cookies.ACCESS_TOKEN_CACHE_KEY, processUserDataResponse(req, res)
-  );
-}
 
 router.post('/', function (req, res) {
   var destinationEmailAddress = req.body.default_email;
