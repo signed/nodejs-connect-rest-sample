@@ -14,6 +14,10 @@ router.get('/', function (req, res) {
   requestUtil.getUserData(req.cookies.ACCESS_TOKEN_CACHE_KEY, processUserDataResponse(req, res));
 });
 
+router.get('/jira', function (req, res) {
+  res.render('jira');
+});
+
 router.get('/disconnect', function (req, res) {
   // check for token
   req.session.destroy();
