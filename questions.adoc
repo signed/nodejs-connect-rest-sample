@@ -5,6 +5,7 @@ Main Header
 Where to change permissions the app requests?::
   The property +credentials.scope+ in +authHelper.js+ has a list of space separated permissions.
 What options are configured in express?::
+  http://stackoverflow.com/questions/26871522/how-to-change-default-layout-in-express-using-handlebars[handlebar in express]
   Have a look into app.js and read the documentation
 How to send attachments?::
   Lets see
