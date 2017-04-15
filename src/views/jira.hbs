@@ -1,1 +1,9 @@
-<p>flup</p>
+{{#if error}}
+    <span>{{error}}</span>
+{{/if}}
+
+<ul style='list-style-type:none'>
+    {{#each versions}}
+        <li>{{name}} {{description}}</li>
+    {{/each}}
+</ul>

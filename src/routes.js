@@ -3,6 +3,7 @@ var router = express.Router();
 var authHelper = require('./authHelper.js');
 var requestUtil = require('./requestUtil.js');
 var emailer = require('./emailer.js');
+var {httpRequest} = require('./httpClient');
 
 /* GET home page. */
 router.get('/', function (req, res) {
@@ -15,7 +16,25 @@ router.get('/', function (req, res) {
 });
 
 router.get('/jira', function (req, res) {
-  res.render('jira');
+
+  //curl -u admin:admin -X GET -H "Content-Type: application/json" https://localhost:2990/jira/rest/api/2/project/SAM/versions
+  //curl -u admin:admin -X GET -H "Content-Type: application/json" https://localhost:2990/jira/rest/api/2/search?jql=project%20%3D%20SAM%20AND%20fixVersion%20%3D%20next-release
+  let projectKey = 'SAM';
+  var options = {
+    protocol: 'http:',
+    host: 'localhost',
+    port: '2990',
+    path: '/jira/rest/api/2/project/' + projectKey + '/versions',
+    method: 'GET',
+    auth: 'admin:admin',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  };
+
+  httpRequest(options)
+    .then((versionsJson) => res.render('jira', {versions: JSON.parse(versionsJson)}))
+    .catch((err) => res.render('jira', {error: err}));
 });
 
 router.get('/disconnect', function (req, res) {
