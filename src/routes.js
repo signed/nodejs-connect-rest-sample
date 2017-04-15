@@ -24,7 +24,7 @@ router.get('/jira', function (req, res) {
     protocol: 'http:',
     host: 'localhost',
     port: '2990',
-    path: '/jira/rest/api/2/project/' + projectKey + '/versions',
+    path: `/jira/rest/api/2/project/${projectKey}/versions`,
     method: 'GET',
     auth: 'admin:admin',
     headers: {
