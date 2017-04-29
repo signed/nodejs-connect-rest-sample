@@ -14,6 +14,18 @@ router.get('/', function (req, res) {
   requestUtil.getUserData(req.cookies.ACCESS_TOKEN_CACHE_KEY, processUserDataResponse(req, res));
 });
 
+router.get('/releases', function (req, res) {
+  res.json([]);
+});
+
+router.get('/releases/current', function (req, res) {
+  res.json({})
+});
+
+router.get('/releases/last', function (req, res) {
+  res.send(404);
+});
+
 router.get('/jira', function (req, res) {
   const jiraClient = new JiraClient();
   const renderError = (err) => res.render('jira', {error: err});
