@@ -15,6 +15,7 @@
     "debug": "~2.2.0",
     "express": "~4.13.1",
     "express-session": "^1.11.3",
+    "cors": "2.8.3",
     "hbs": "~3.1.0",
     "morgan": "~1.6.1",
     "node-uuid": "^1.4.7",

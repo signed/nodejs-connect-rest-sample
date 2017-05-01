@@ -19,7 +19,7 @@ router.get('/releases', function (req, res) {
 });
 
 router.get('/releases/current', function (req, res) {
-  res.json({})
+  res.json({version:'1.2.3'})
 });
 
 router.get('/releases/last', function (req, res) {
