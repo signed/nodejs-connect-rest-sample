@@ -16,6 +16,11 @@ const putCurrentRelease = function (currentReleaseUpdate) {
   return Promise.resolve(currentRelease);
 };
 
+const deleteCurrentRelease = function () {
+  currentRelease = undefined;
+  return Promise.resolve();
+};
+
 router.get('/', function (req, res) {
   // check for token
   if (req.cookies.REFRESH_TOKEN_CACHE_KEY === undefined) {
@@ -27,6 +32,20 @@ router.get('/', function (req, res) {
 
 router.get('/releases', function (req, res) {
   res.json([]);
+});
+
+// cu
+router.post('/releases/current', function (req, res) {
+  getCurrentRelease()
+    .then(currentRelease => {
+      if (currentRelease) {
+        res.send(409);
+        return;
+      }
+      return putCurrentRelease({version: '0.3.0'});
+    })
+    .then(currentRelease => res.json(currentRelease))
+    .catch(e => res.send(500))
 });
 
 // curl -X PUT -H "Content-Type: application/json" -d '{"version":"1.2.3"}' "http://localhost:3000/releases/current"
@@ -47,6 +66,12 @@ router.get('/releases/current', function (req, res) {
       res.json(currentRelease)
     })
     .catch(error => res.send(500));
+});
+
+router.delete('/releases/current', function (req, res) {
+  deleteCurrentRelease()
+    .then(() => res.send(204))
+    .catch(error => res.send(500))
 });
 
 router.get('/releases/last', function (req, res) {
