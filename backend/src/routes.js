@@ -4,22 +4,7 @@ const authHelper = require('./authHelper.js');
 const requestUtil = require('./requestUtil.js');
 const emailer = require('./emailer.js');
 const JiraClient = require('./JiraClient');
-
-let currentRelease = undefined;
-
-const getCurrentRelease = function () {
-  return Promise.resolve(currentRelease);
-};
-
-const putCurrentRelease = function (currentReleaseUpdate) {
-  currentRelease = currentReleaseUpdate;
-  return Promise.resolve(currentRelease);
-};
-
-const deleteCurrentRelease = function () {
-  currentRelease = undefined;
-  return Promise.resolve();
-};
+const currentRelease = require('./CurrentRelease');
 
 router.get('/', function (req, res) {
   // check for token
@@ -30,34 +15,9 @@ router.get('/', function (req, res) {
   requestUtil.getUserData(req.cookies.ACCESS_TOKEN_CACHE_KEY, processUserDataResponse(req, res));
 });
 
-router.get('/releases', function (req, res) {
-  res.json([]);
-});
-
-// cu
-router.post('/releases/current', function (req, res) {
-  getCurrentRelease()
-    .then(currentRelease => {
-      if (currentRelease) {
-        res.send(409);
-        return;
-      }
-      return putCurrentRelease({version: '0.3.0'});
-    })
-    .then(currentRelease => res.json(currentRelease))
-    .catch(e => res.send(500))
-});
-
-// curl -X PUT -H "Content-Type: application/json" -d '{"version":"1.2.3"}' "http://localhost:3000/releases/current"
-router.put('/releases/current', function (req, res) {
-  putCurrentRelease(req.body)
-    .then(currentRelease => res.json(currentRelease))
-    .catch(error => res.send(500));
-});
-
 // curl -X GET "http://localhost:3000/releases/current"
 router.get('/releases/current', function (req, res) {
-  getCurrentRelease()
+  currentRelease.getCurrentRelease()
     .then(currentRelease => {
       if (!currentRelease) {
         res.send(404);
@@ -68,8 +28,31 @@ router.get('/releases/current', function (req, res) {
     .catch(error => res.send(500));
 });
 
+router.post('/releases/current', function (req, res) {
+  currentRelease.getCurrentRelease()
+    .then(release => {
+      if (release) {
+        res.send(409);
+        return;
+      }
+      return currentRelease.putCurrentRelease({version: '0.3.0'});
+    })
+    .then(currentRelease => res.json(currentRelease))
+    .catch(e => {
+      console.log(e);
+      res.send(500);
+    })
+});
+
+// curl -X PUT -H "Content-Type: application/json" -d '{"version":"1.2.3"}' "http://localhost:3000/releases/current"
+router.put('/releases/current', function (req, res) {
+  currentRelease.putCurrentRelease(req.body)
+    .then(release => res.json(release))
+    .catch(error => res.send(500));
+});
+
 router.delete('/releases/current', function (req, res) {
-  deleteCurrentRelease()
+  currentRelease.deleteCurrentRelease()
     .then(() => res.send(204))
     .catch(error => res.send(500))
 });
