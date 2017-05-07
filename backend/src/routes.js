@@ -5,6 +5,17 @@ const requestUtil = require('./requestUtil.js');
 const emailer = require('./emailer.js');
 const JiraClient = require('./JiraClient');
 
+let currentRelease = undefined;
+
+const getCurrentRelease = function () {
+  return Promise.resolve(currentRelease);
+};
+
+const putCurrentRelease = function (currentReleaseUpdate) {
+  currentRelease = currentReleaseUpdate;
+  return Promise.resolve(currentRelease);
+};
+
 router.get('/', function (req, res) {
   // check for token
   if (req.cookies.REFRESH_TOKEN_CACHE_KEY === undefined) {
@@ -18,8 +29,24 @@ router.get('/releases', function (req, res) {
   res.json([]);
 });
 
+// curl -X PUT -H "Content-Type: application/json" -d '{"version":"1.2.3"}' "http://localhost:3000/releases/current"
+router.put('/releases/current', function (req, res) {
+  putCurrentRelease(req.body)
+    .then(currentRelease => res.json(currentRelease))
+    .catch(error => res.send(500));
+});
+
+// curl -X GET "http://localhost:3000/releases/current"
 router.get('/releases/current', function (req, res) {
-  res.json({version:'1.2.3'})
+  getCurrentRelease()
+    .then(currentRelease => {
+      if (!currentRelease) {
+        res.send(404);
+        return;
+      }
+      res.json(currentRelease)
+    })
+    .catch(error => res.send(500));
 });
 
 router.get('/releases/last', function (req, res) {
