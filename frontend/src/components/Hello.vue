@@ -4,8 +4,11 @@
       <a href="javascript:" v-on:click="startRelease">Start a new release right now?</a>
     </template>
     <template v-else>
-      <a href="javascript:" v-on:click="cancelRelease">cancel release</a>
-      <a href="javascript:" v-on:click="updateRelease">store release</a>
+      <div>
+        <a href="javascript:" v-on:click="cancelRelease">cancel release</a>
+        <a href="javascript:" v-on:click="updateRelease">store release</a>
+      </div>
+      <label>version</label>
       <input v-model="currentRelease.version" placeholder="version">
     </template>
   </div>
