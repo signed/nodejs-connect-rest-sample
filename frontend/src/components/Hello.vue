@@ -10,6 +10,11 @@
       </div>
       <label>version</label>
       <input v-model="currentRelease.version" placeholder="version">
+      <ol>
+        <li v-for="item in currentRelease.items" :key="item.name">
+          <textarea v-model="item.text" placeholder="release note"></textarea>
+        </li>
+      </ol>
     </template>
   </div>
 </template>
@@ -22,11 +27,6 @@
     },
     data () {
       return {
-        flup: 'doom',
-        msg: 'Welcome tdfo My oh my sfsdf Vue.afafasfdjs  App',
-        question: 'The Question',
-        answer: 'You have to ask me',
-        response: undefined,
         currentRelease: undefined
       }
     },
@@ -66,23 +66,8 @@
   }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  h1, h2 {
-    font-weight: normal;
-  }
-
-  ul {
+  ol {
     list-style-type: none;
-    padding: 0;
-  }
-
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
-
-  a {
-    color: #42b983;
   }
 </style>
