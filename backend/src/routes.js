@@ -35,7 +35,24 @@ router.post('/releases/current', function (req, res) {
         res.send(409);
         return;
       }
-      return currentRelease.putCurrentRelease({version: '0.3.0'});
+      const initial = {
+        version: '0.3.0',
+        items: [
+          {
+            name: 'SAM-7',
+            text: 'First new issue with version',
+            category: 'customer-facing',
+            link: 'http://localhost:2990/jira/browse/SAM-7'
+          },
+          {
+            name: 'SAM-6',
+            text: 'What\'s next',
+            category: 'customer-facing',
+            link: 'http://localhost:2990/jira/browse/SAM-6'
+          }
+        ]
+      };
+      return currentRelease.putCurrentRelease(initial);
     })
     .then(currentRelease => res.json(currentRelease))
     .catch(e => {
