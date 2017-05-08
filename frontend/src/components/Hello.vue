@@ -12,6 +12,7 @@
       <input v-model="currentRelease.version" placeholder="version">
       <ol>
         <li v-for="item in currentRelease.items" :key="item.name">
+          <a :href="item.link" target="_blank">{{item.name}}</a>
           <textarea v-model="item.text" placeholder="release note"></textarea>
         </li>
       </ol>
