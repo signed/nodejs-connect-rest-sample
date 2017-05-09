@@ -5,8 +5,8 @@
     </template>
     <template v-else>
       <div>
-        <a href="javascript:" v-on:click="cancelRelease">cancel release</a>
-        <a href="javascript:" v-on:click="updateRelease">store release</a>
+        <button v-on:click="cancelRelease">cancel release</button>
+        <button v-on:click="updateRelease">store release</button>
       </div>
       <label>version</label>
       <input v-model="currentRelease.version" placeholder="version">
