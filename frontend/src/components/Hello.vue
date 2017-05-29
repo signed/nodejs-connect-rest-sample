@@ -17,6 +17,11 @@
         </li>
       </ol>
     </template>
+    <ul>
+      <li v-for="version in jiraVersions" :key="version.id">
+        <a :href="version.link" target="_blank">{{version.name}}</a>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -24,10 +29,12 @@
   export default {
     name: 'hello',
     created: function () {
+      this.getJiraVersions()
       this.getCurrentRelease()
     },
     data () {
       return {
+        jiraVersions: undefined,
         currentRelease: undefined
       }
     },
@@ -38,7 +45,7 @@
           .then(response => {
             vm.currentRelease = response.body
           })
-          .catch(e => console.log('failed to start a new release ' + e))
+          .catch(e => console.log('failed to start a new release' + e))
       },
       getCurrentRelease: function () {
         const vm = this
@@ -48,7 +55,7 @@
           })
           .catch(e => {
             if (e.status !== 404) {
-              console.log('failed to fetch current release ' + JSON.stringify(e))
+              console.log('failed to fetch current release' + JSON.stringify(e))
             }
           })
       },
@@ -61,7 +68,17 @@
           .then(() => {
             vm.currentRelease = undefined
           })
-          .catch(e => console.log('failed to cancel release ' + JSON.stringify(e)))
+          .catch(e => console.log('failed to cancel release' + JSON.stringify(e)))
+      },
+      getJiraVersions: function () {
+        const vm = this
+        this.$http.get('http://localhost:3000/jira/versions')
+          .then(response => {
+            vm.jiraVersions = response.body
+          })
+          .catch(e => {
+            console.log('failed to fetch jira versions' + JSON.stringify(e))
+          })
       }
     }
   }

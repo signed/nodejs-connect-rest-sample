@@ -4,6 +4,7 @@ const authHelper = require('./authHelper.js');
 const requestUtil = require('./requestUtil.js');
 const emailer = require('./emailer.js');
 const JiraClient = require('./JiraClient');
+const _ = require('lodash');
 const currentRelease = require('./CurrentRelease');
 
 router.get('/', function (req, res) {
@@ -76,6 +77,27 @@ router.delete('/releases/current', function (req, res) {
 
 router.get('/releases/last', function (req, res) {
   res.send(404);
+});
+
+router.get('/jira/versions', function (req, res) {
+  new JiraClient().versionsFor('SAM')
+    .then(versionsString => {
+      const versions = JSON.parse(versionsString);
+
+      res.json(_.map(versions, function (version) {
+        return {
+          id: version.id,
+          link: 'http://localhost:2990/jira/browse/SAM/fixforversion/' + version.id,
+          name: version.name,
+          description: version.description,
+        }
+      }));
+    })
+    .catch(error => res.send(500));
+});
+
+router.get('/jira/versions/:id', function (req, res) {
+  //new JiraClient().
 });
 
 router.get('/jira', function (req, res) {
