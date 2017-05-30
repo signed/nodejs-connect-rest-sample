@@ -92,7 +92,7 @@
           })
       },
       onJiraVersionSelected: function (versionId) {
-        this.selectedJiraVersion = versionId
+        this.selectedJiraVersion = this.selectedJiraVersion === versionId ? undefined : versionId
       }
     }
   }
