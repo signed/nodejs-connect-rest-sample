@@ -19,9 +19,13 @@
     </template>
     <ul>
       <li v-for="version in jiraVersions" :key="version.id">
+        <button v-on:click="onJiraVersionSelected(version.id)">{{version.name}}</button>
         <a :href="version.link" target="_blank">{{version.name}}</a>
       </li>
     </ul>
+    <div v-if="selectedJiraVersion">
+      <span v-for="item in itemsInVersion">{{item}}</span>
+    </div>
   </div>
 </template>
 
@@ -35,7 +39,14 @@
     data () {
       return {
         jiraVersions: undefined,
+        selectedJiraVersion: undefined,
         currentRelease: undefined
+      }
+    },
+
+    computed: {
+      itemsInVersion: function () {
+        return [this.selectedJiraVersion + ' go', this.selectedJiraVersion + ' go', this.selectedJiraVersion + ' gadget']
       }
     },
     methods: {
@@ -79,6 +90,9 @@
           .catch(e => {
             console.log('failed to fetch jira versions' + JSON.stringify(e))
           })
+      },
+      onJiraVersionSelected: function (versionId) {
+        this.selectedJiraVersion = versionId
       }
     }
   }
