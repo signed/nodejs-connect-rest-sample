@@ -17,36 +17,21 @@
         </li>
       </ol>
     </template>
-    <ul>
-      <li v-for="version in jiraVersions" :key="version.id">
-        <button v-on:click="onJiraVersionSelected(version.id)">{{version.name}}</button>
-        <a :href="version.link" target="_blank">{{version.name}}</a>
-      </li>
-    </ul>
-    <div v-if="selectedJiraVersion">
-      <span v-for="item in itemsInVersion">{{item}}</span>
-    </div>
+    <jira></jira>
   </div>
 </template>
 
 <script>
+  import Jira from './Jira'
   export default {
+    components: {Jira},
     name: 'hello',
     created: function () {
-      this.getJiraVersions()
       this.getCurrentRelease()
     },
     data () {
       return {
-        jiraVersions: undefined,
-        selectedJiraVersion: undefined,
         currentRelease: undefined
-      }
-    },
-
-    computed: {
-      itemsInVersion: function () {
-        return [this.selectedJiraVersion + ' go', this.selectedJiraVersion + ' go', this.selectedJiraVersion + ' gadget']
       }
     },
     methods: {
@@ -80,19 +65,6 @@
             vm.currentRelease = undefined
           })
           .catch(e => console.log('failed to cancel release' + JSON.stringify(e)))
-      },
-      getJiraVersions: function () {
-        const vm = this
-        this.$http.get('http://localhost:3000/jira/versions')
-          .then(response => {
-            vm.jiraVersions = response.body
-          })
-          .catch(e => {
-            console.log('failed to fetch jira versions' + JSON.stringify(e))
-          })
-      },
-      onJiraVersionSelected: function (versionId) {
-        this.selectedJiraVersion = this.selectedJiraVersion === versionId ? undefined : versionId
       }
     }
   }
